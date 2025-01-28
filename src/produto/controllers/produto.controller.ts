@@ -14,9 +14,8 @@ import {
 } from '@nestjs/common';
 import { ProdutoService } from '../services/produto.service';
 import { Produto } from '../entities/produto.entity';
-// import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 
-//  @UseGuards(JwtAuthGuard)
  @Controller('/produtos')
  export class ProdutoController {
    constructor(private readonly produtoService: ProdutoService) {}
@@ -45,18 +44,21 @@ import { Produto } from '../entities/produto.entity';
      return this.produtoService.findByMarca(marca);
    }
 
+   @UseGuards(JwtAuthGuard)
    @Post()
    @HttpCode(HttpStatus.CREATED)
    create(@Body() produto: Produto): Promise<Produto> {
      return this.produtoService.create(produto);
    }
 
+   @UseGuards(JwtAuthGuard)
    @Put()
    @HttpCode(HttpStatus.OK)
    update(@Body() produto: Produto): Promise<Produto> {
      return this.produtoService.update(produto);
    }
 
+   @UseGuards(JwtAuthGuard)
    @Delete('/:id')
    @HttpCode(HttpStatus.NO_CONTENT)
    delete(@Param('id', ParseIntPipe) id: number) {
